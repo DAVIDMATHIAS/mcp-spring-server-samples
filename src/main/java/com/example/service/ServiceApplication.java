@@ -9,9 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 @SpringBootApplication
 public class ServiceApplication {
@@ -31,15 +28,27 @@ public class ServiceApplication {
 @Component
 class Tools {
 	private Util util = new Util();
-    @Tool(description = "List full details of a student")
+    @Tool(description = "Gives detail of a student, like name, age, GPA")
     String studentDetails(@ToolParam(description = "Student ID") String studentId) {
-		return util.getStudentDetails(studentId);
+		if (studentId == null || studentId.isEmpty()) {
+			return "Student ID cannot be null or empty";
+		}
+		System.out.println("Fetching details for student ID: " + studentId);
+		String studentDetail = util.getStudentDetails(studentId);
+		if (studentDetail == null || studentDetail.isEmpty()) {
+			return "No details found for student ID: " + studentId;
+		}
+		System.out.println("Student Details: " + studentDetail);
+
+		return studentDetail;
 	}
 
 
-	@Tool(description = "List all student Ids")
+	@Tool(description = "Lists all student IDs in comma separated format")
 	String listStudentIds() {
-		return util.getStudentIds();
+		String ids = util.getStudentIds();
+		System.out.println("Student IDs: " + ids);
+		return ids;
 	}
 
 
