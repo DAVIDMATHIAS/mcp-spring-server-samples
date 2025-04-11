@@ -28,7 +28,7 @@ public class ServiceApplication {
 @Component
 class Tools {
 	private Util util = new Util();
-    @Tool(description = "Gives detail of a student, like name, age, GPA")
+    @Tool(description = "Gives details of a student, like name, age, GPA. \n calling listStudentIds() will give you a list of student IDs")
     String studentDetails(@ToolParam(description = "Student ID") String studentId) {
 		if (studentId == null || studentId.isEmpty()) {
 			return "Student ID cannot be null or empty";
