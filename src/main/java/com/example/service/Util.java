@@ -1,12 +1,14 @@
 package com.example.service;
 
+import com.example.service.tools.Student;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Util {
-    Map<String,String> studentDetails = new HashMap<>();
-    public  String getStudentDetails(String studentId) {
+    Map<String, Student> studentDetails = new HashMap<>();
+    public Student getStudentDetails(String studentId) {
         if (studentDetails.containsKey(studentId)) {
             return studentDetails.get(studentId);
         }
@@ -21,15 +23,16 @@ public class Util {
                 if (parts[0].equals(studentId)) {
                     String studentDetail = String.format("Student ID: %s\nName: %s\nAge: %s\nGPA: %s",
                             parts[0], parts[1], parts[2], parts[3]);
-                    studentDetails.put(studentId, studentDetail);
-                    return studentDetail;
+                    Student studentInfo = new Student(parts[1], Integer.parseInt(parts[2]), Double.parseDouble(parts[3]), parts[0]);
+                    studentDetails.put(studentId, studentInfo);
+                    return studentInfo;
                 }
             }
             scanner.close();
-            return "Student not found with ID: " + studentId;
+            return null;
 
         } catch (java.io.FileNotFoundException e) {
-            return "Error: Student records file not found";
+            return null;
         }
     }
 
@@ -51,9 +54,8 @@ public class Util {
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
                     String[] parts = line.split(",\\s*");
-                    String studentDetail = String.format("Student ID: %s\nName: %s\nAge: %s\nGPA: %s",
-                            parts[0], parts[1], parts[2], parts[3]);
-                    studentDetails.put(parts[0], studentDetail);
+                    Student studentInfo = new Student(parts[1], Integer.parseInt(parts[2]), Double.parseDouble(parts[3]), parts[0]);
+                    studentDetails.put(parts[0], studentInfo);
                 }
                 scanner.close();
             } catch (java.io.FileNotFoundException e) {
